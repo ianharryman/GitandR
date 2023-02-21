@@ -56,4 +56,52 @@ my_tibble <-
 my_tibble
 
 
+# Now we're going to try our hands at a function
+
+# this is an if-else statement, but one that does not use the ifelse command
+
+recommend_1 <- function(x){
+  if (x >= 90) {
+    "locate air conditioning"
+  } else if (x >= 60){
+    "go outside"
+  } else if (x >= 30) {
+    "wear a jacket"
+  } else {
+    "move"
+  }
+}
+
+recommend_1(92)
+recommend_1(20)
+recommend_1(49)
+
+
+# Now lets move on to mutate:
+
+# Mutate will create a new column, but the vector length has to match the rest of the tibble
+set.seed(128)
+
+df <- tibble(temperature = sample(x = -15:110, size = 5, replace = TRUE))
+
+# adding a column
+df %>%
+  mutate(new_column = c(1,2,3,4,5))
+
+# you can add a column with only one value listed and the mutate 
+# command will replace all values with that value
+
+df %>%
+  mutate(new_column = 1)
+
+
+# often, you will create new columns by applying functions to existing ones
+
+f_to_c <- function(degrees_fahrenheit){
+  (degrees_fahrenheit - 32) * (5/9)
+}
+
+# now lets apply the function
+df %>%
+  mutate(temperature_celcius = f_to_c(temperature))
 
