@@ -59,7 +59,6 @@ my_tibble
 # Now we're going to try our hands at a function
 
 # this is an if-else statement, but one that does not use the ifelse command
-
 recommend_1 <- function(x){
   if (x >= 90) {
     "locate air conditioning"
@@ -90,13 +89,11 @@ df %>%
 
 # you can add a column with only one value listed and the mutate 
 # command will replace all values with that value
-
 df %>%
   mutate(new_column = 1)
 
 
 # often, you will create new columns by applying functions to existing ones
-
 f_to_c <- function(degrees_fahrenheit){
   (degrees_fahrenheit - 32) * (5/9)
 }
@@ -104,4 +101,39 @@ f_to_c <- function(degrees_fahrenheit){
 # now lets apply the function
 df %>%
   mutate(temperature_celcius = f_to_c(temperature))
+
+# one of the problems with mutate is that it can't handle 
+# a vector of values wihtout specifically defining each row
+temps <- c(1, 55, 101)
+recommend_1(temps)
+# so we need to create a function to deal with this
+
+# use the case_when function in lieu of a nested ifelse
+recommendation_2 <- function(x){
+  case_when(
+    x >= 90 ~ "locate air conditioning",
+    x >= 60 ~ "go outside",
+    x >= 30 ~ "wear a jacket",
+    x >= 0  ~ "wear multiple jackets",
+    TRUE    ~ "move"
+  )
+}
+
+recommendation_2(temps)
+# much better
+
+# now we can create a new column that inputs the values
+# for each row
+df %>%
+  mutate(recommendation = recommendation_2(temperature))
+
+
+
+# here's an example of a simple function
+kilometers_to_miles <- function(x){
+  x * 0.62
+}
+
+kilometers_to_miles(10)
+
 
